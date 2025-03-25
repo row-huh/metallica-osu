@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metallica osu</title>
+
+
+    <style>
+        button {
+            width: 40px;
+            height: 40px;
+        }
+    </style>
+</head>
+<body>
+    <button id="a">A</button>
+    <button id="j">J</button>
+</body>
+</html>
+
+
+<script>
+
+    document.addEventListener('keydown',  (event) => {
+        console.log(event)
+        key = event.key
+
+        if (key == 'a') {
+            let a_sound = new Audio('kick.wav')
+            a_sound.play()
+        }
+        else if (key == 'j') {
+            let j_sound = new Audio('Crash_ZD_2.wav')
+            j_sound.play()
+        }
+        
+    })
+
+</script>
