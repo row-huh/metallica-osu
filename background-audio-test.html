@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Play sound with JavaScript  </title>
+</head>
+<body>
+   <button id="play">Play</button>
+   <script>
+        let play = document.getElementById("play");
+            function playMusic() {
+             let guitar = new Audio("audios/master-of-puppets/guitar.mp3");
+             let rhythm = new Audio("audios/master-of-puppets/rhythm.mp3")
+             // user will have to play drums
+             guitar.play()
+             drum.play()
+             rhythm.play()
+          }
+          play.addEventListener("click", playMusic);
+   </script>
+</body>
+</html>

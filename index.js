@@ -11,7 +11,7 @@ function handleKeyDown (event) {
 
 
     if (key == 'a') {
-        let a_sound = new Audio('kick.wav')
+        let a_sound = new Audio('./audios/guitar.mp3')
         a_sound.play()
     }
     if (key == 'j') {
