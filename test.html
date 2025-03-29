@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Key falling down animation</title>
+    <style>
+        p {
+            position: absolute;
+            top: -50px; /* Start them above the view */
+            left: 50%; /* Initial horizontal position */
+            transform: translateX(-50%); /* Center horizontally */
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let keys = ['A', 'B', 'C'];
+            const floatingSpeed = 2;
+            const body = document.querySelector('body');
+
+            keys.forEach((key) => {
+                const keyElement = document.createElement('p');
+                keyElement.textContent = key;
+                body.appendChild(keyElement);
+
+                let currentTop = -50;
+
+                setInterval(() => {
+                    currentTop += floatingSpeed;
+                    keyElement.style.top = `${currentTop}px`;
+
+                    if (currentTop > window.innerHeight) {
+                        keyElement.remove();
+                    }
+                }, 30);
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="ahh"></div>
+</body>
+</html>
