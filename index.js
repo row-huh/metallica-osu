@@ -1,64 +1,36 @@
+// when dom content loaded is loaded
+//      load the interface with one simple button that says start
+//      when start button is clicked on, play rhythm.mp3 and guitar.mp3 at the same time
+//      
 
-const notes = [
-    {key: "a", time: 2.02},
-    {key: "a", time: 3.5},
-]
-
-document.addEventListener('DOMContentLoaded', () => {
-    //background music playing logic
-    let play = document.getElementById("play");
-
-
-    document.addEventListener('keydown', handleKeyDown);  
-    play.addEventListener("click", playMusic);
+// button click logic?:
+// create sort of like swimlanes for the following keys: a, s, j, k
+// have the music notes fall down incrementally - each note is a dict object(or json? oh god i keep forgetting js)
+// when the time comes for a key to fall down, that key is opened and it falls down on the lane of the corresponding alphabet.
+// For example, current key = {alphabet: "a"} so this key will fall down along the path of 'a'
+// Also, assume any one hypothetical (or an exclusive html element, like a line) to be the boundary as in if the key
+// is hit at that boundary then it is a perfect hit - if not clicked upon then it must keep going down until it reaches
+// the end of the viewport - at which point, the key should disappear 
 
 
+
+document.addEventListener('DOMContentLoaded', ()=> {
+    // load interface that only has one button which says 'start'
+    // when the start button is clicked on, call the createLanes function
+    start.addEventListener('onclick', createLanes)
+    // somehow play the background music
+    // somehow have the notes start falling down
+    // somehow figure out how it's all gonna go down next 
 })
-                                                                                                              
-
-function handleKeyDown (event) {
-    const key = event.key.toLowerCase();
-    const currentTime = performance.now() / 1000; // Convert to seconds
-
-    playNote(key, currentTime);
-}
-
-
-function playNote(key, currentTime, audio) {
-    for (const note of notes) {
-        if (note.key === key) {
-            const errorMargin = 0.2; // Allow 200ms deviation
-
-            if (Math.abs(currentTime - note.time) <= errorMargin) {
-                console.log(`🎯 Perfect! Played ${key} at ${currentTime.toFixed(2)}s`);
-            } else if (currentTime < note.time) {
-                console.log(`⌛ Too early! Expected at ${note.time}s`);
-            } else {
-                console.log(`⏳ Too late! Expected at ${note.time}s`);
-            }
-
-            // Play the sound no matter what
-            const sound = new Audio(audio);
-            sound.currentTime = note.time
-            sound.play();
-            break;
-        }
-    }
-}
 
 
 
-
-function playMusic() {
- let guitar = new Audio("audios/master-of-puppets/guitar.mp3");
- let rhythm = new Audio("audios/master-of-puppets/rhythm.mp3");
- let drums = new Audio("audios/master-of-puppets/drums.mp3")
- // user will have to play drums
- guitar.play()
- rhythm.play()
- playDrums(drums)
-}
-
-function playDrums(drums) {
+function createLanes() {
+    // for each key in the array KEYS (a,s,d or whatever)
+    // get the total width of the viewport and then divide by the total length of array KEYS
+    // assign one partition for each key - this should somehow, im not yet sure how, but it should help
+    // in guiding each note where to fall
+    // return something? do i need to save any info here? the center of each lane maybe?? 
+    // like the exact horizontal place (each note area's center) where the key is supposed to fall
 
 }
