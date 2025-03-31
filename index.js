@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
         
     })
     // somehow figure out how it's all gonna go down next 
+    // somehow figure out the point system 
 })
 
 
@@ -47,6 +48,8 @@ function createLanes() {
     // in guiding each note where to fall
     // return something? do i need to save any info here? the center of each lane maybe?? 
     // like the exact horizontal place (each note area's center) where the key is supposed to fall
+    // return {key : "a", center: "difference from the left in pixels(int)"}??
+
 
 }
 
@@ -58,6 +61,14 @@ function playBgMusic(song) {
     rhythm.play()
 }
 
+
+
 function playNotes(notes) {
     // somehow have the notes start falling down
+
+    // um i was thinking if there is any way that i start counting time
+    // and only when the current time matches the time attribute of the next element
+    // should the note be played?
+    // or maybe current time - delay matches the time attribute??
+    // because you have to deduct out the time it would take for it to fall?? gahhhhh idk
 }
