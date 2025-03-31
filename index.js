@@ -1,7 +1,9 @@
 // necessary variables go here
-NOTES = [   // all instances where the player must intervene. 
-    {"time": 1.2, "key": "a", "sound" : "1.mp3"}
-]  
+//NOTES = [   // all instances where the player must intervene. 
+//    {"time": 1.2, "key": "a", "sound" : "1.mp3"}
+//]  
+
+//KEYS = ['a', 's', 'j', 'k']
 // NOTES attributes: Time is the time at which they should intervene, key is the action they must take, sound is the sound that will play when the provided action is taken
 
 
@@ -27,7 +29,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
     // load interface that only has one button which says 'start'
     // when the start button is clicked on, call the createLanes function
     start.addEventListener('onclick', () => {
-        createLanes()
+        createLanes(KEYS)
         // somehow play the background music
         playBgMusic("master-of-puppets")
         // somehow have the notes start falling down
@@ -41,7 +43,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
 
 
-function createLanes() {
+function createLanes(keys) {
     // for each key in the array KEYS (a,s,d or whatever)
     // get the total width of the viewport and then divide by the total length of array KEYS
     // assign one partition for each key - this should somehow, im not yet sure how, but it should help
@@ -53,10 +55,12 @@ function createLanes() {
 
 }
 
-function playBgMusic(song) {
+export function playBgMusic(song) {
     // somehow play the bg music
-    let guitar = new Audio('audios/master-of-puppets/guitar.mp3')
-    let rhythm = new Audio('audios/master-of-puppets/rhythm.mp3')
+    console.log("Oh look you have reached the function")
+    let guitar = new Audio('../audios/master-of-puppets/guitar.mp3') // had to change path for test - might need to change again (remove ../)
+    let rhythm = new Audio('../audios/master-of-puppets/rhythm.mp3')
+    console.log("The music should start playing here")
     guitar.play()
     rhythm.play()
 }

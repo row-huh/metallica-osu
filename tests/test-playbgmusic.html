@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Play Background Music (from Tests)</title>
+</head>
+<body>
+  <h1>Play Music (from Tests)</h1>
+  <button id="playButton">Play Master of Puppets</button>
+
+  <script type="module" src="../index.js"></script>
+  <script type="module">
+    import { playBgMusic } from '.././index.js'; // Adjust the import path
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const playButton = document.getElementById('playButton');
+      if (playButton) {
+        playButton.addEventListener('click', () => {
+          playBgMusic("master-of-puppets");
+        });
+      }
+    });
+  </script>
+</body>
+</html>
