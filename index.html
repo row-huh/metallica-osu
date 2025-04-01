@@ -3,35 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Metallica osu</title>
-    <script type="module" src="index.js"></script>
-
-    <script type="module">
-        import { playBgMusic } from './index.js'
-
-        document.addEventListener("DOMContentLoaded", () => {
-            playbtn = document.getElementById('#play')
-
-            playbtn.addEventListener('onclick', () => {
-                playBgMusic('master-of-puppets')
-
-            })
-        })
-
-    </script>
-
+    <title>Metallica Osu</title>
+    <link rel="stylesheet" href="static/styles.css">
+    <script src="index.js"></script>
 </head>
+
+
 <body>
-    <button id="play">Play</button>
-
-    <button class='key' id="a">A</button>    
-    <button class='key' id="s">S</button>
-    <button class='key' id="d">D</button>
-
-
-    <button class='key' id="j">J</button>
-    <button class='key' id="k">K</button>
-    <button class='key' id="l">L</button>
-
+        <div id="key-container-a">
+            A
+        </div>
+        <div id="key-container-s">
+            S
+        </div>
+        <div id="key-container-j">
+            J
+        </div>
+        <div id="key-container-k">
+            K
+        </div>
 </body>
 </html>
