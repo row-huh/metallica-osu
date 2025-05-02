@@ -5,16 +5,17 @@ NOTES = [   // all instances where the player must intervene.
     {"time": 3.2, "key": "j"},
     {"time": 4.2, "key": "k"}
 ]
-
-KEYS = ['a', 's', 'j', 'k']
 // NOTES attributes: Time is the time at which they should intervene, key is the action they must take, sound is the sound that will play when the provided action is taken
 
+KEYS = ['a', 's', 'j', 'k']
 
-// roha to roha : DO NOT EDIT THE TEXT BELOW THIS - LET THIS BE HERE REPRESENTING THE ENTIRE SCRIPT
+
+// roha to roha : DO NOT DELETE THE TEXT BELOW THIS - LET THIS BE HERE REPRESENTING THE ENTIRE SCRIPT
 // MAIN LOGIC
-// when dom content loaded is loaded
+// when dom content is loaded
 //      load the interface with one simple button that says start
 //      when start button is clicked on, play rhythm.mp3 and guitar.mp3 at the same time
+//      drums.mp3 is to be the sound that the user will have to play
 
 
 // button click logic?:
@@ -39,7 +40,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
         keys = {A, S, J, K}
         // const lanes = createLanes(KEYS)
-        // somehow play the background music
+        // somehow play the background music -DONE
         playBgMusic("master-of-puppets")
         // somehow have the notes start falling down
         playNotes(NOTES, keys)
@@ -47,18 +48,19 @@ document.addEventListener('DOMContentLoaded', ()=> {
         
     })
     // somehow figure out how it's all gonna go down next 
-    // somehow figure out the point system 
 })
 
 
 
 
-// i probably don't need this function 
+// UPDATE: i probably don't need this function 
 function createLanes(keys) {
     // somehow create one container / div for each key in the array KEYS
 }
 
 
+
+// start playing the guitar and the rhythm
 export function playBgMusic(song) {
     let guitar = new Audio('../audios/master-of-puppets/guitar.mp3') // had to change path for test - might need to change again (remove ../)
     let rhythm = new Audio('../audios/master-of-puppets/rhythm.mp3')
@@ -70,8 +72,17 @@ export function playBgMusic(song) {
 
 
 function playNotes(notes, lanes) {
-    // somehow, eaach note must be read 1 second before it must be executed
-    // that 1 sec is for the falling down animation
+    // somehow, each note must be read 1 second before it must be executed
+    // that 1 sec is for the falling down animation - CSS?
     // The notes shouldn't go incrementally - like one goes through then we read the other
-    // Instead, notes should start appearing T minus 1 second, I think I need something asynchronous here
-    }
+    // Instead, notes should start appearing T minus 1 second for each note, I think I need something asynchronous here
+
+    startTime = Date.now()
+
+    // create an interval that runs after every 10th of a second;
+    const interval = setInterval(() => {
+        const currentTime = (Date.now() - startTime) / 1000;
+        
+        // for loop which runs each 0.1 second later
+    }, 100) // 100 ms
+}
