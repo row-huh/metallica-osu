@@ -42,16 +42,35 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
         keys = {A, S, J, K};
         // const lanes = createLanes(KEYS)
-        // somehow play the background music -DONE
+        // somehow play the background music - DONE
         playBgMusic("master-of-puppets")
         // somehow have the notes start falling down
         playNotes(NOTES, keys)
 
-        
-    })
-    // somehow figure out how it's all gonna go down next 
+        // if a,s,j,k are pressed
+        // putting this inside dom content loaded and start clicked bcz i only need
+        // to accept keys after the two pre-reqs have been fulfilled: 
+        // 1. the page is loaded
+        // 2. the background music is playing
+        document.addEventListener('keydown', function(e) {
+            if (e.key == 'a' || e.key == 'A') {
+                console.log("A pressed");
+            } else if (e.key == 's' || e.key == 'S') {
+                console.log("S pressed");
+            } else if (e.key == 'j' || e.key == 'J') {
+                console.log("J pressed");
+            } else if (e.key == 'k' || e.key == 'K') { 
+                console.log("K pressed");
+            } else {
+                console.log("Irrelevant key pressed");
+            }
+        // somehow figure out how it's all gonna go down next 
 })
 
+
+    })
+
+})
 
 
 
