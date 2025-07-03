@@ -28,17 +28,19 @@ KEYS = ['a', 's', 'j', 'k']
 // the end of the viewport - at which point, the key should disappear 
 // OVER
 
+console.log("Before running script")
 
 document.addEventListener('DOMContentLoaded', ()=> {
+    const start = document.getElementById('start-button');
     // load interface that only has one button which says 'start'
     // when the start button is clicked on, call the createLanes function
-    start.addEventListener('onclick', () => {
-        A = document.getElementById("key-container-a")
-        S = document.getElementById("key-container-s")
-        J = document.getElementById("key-container-j")
-        K = document.getElementById("key-container-k")
+    start.addEventListener('click', () => {
+        A = document.getElementById("key-container-a");
+        S = document.getElementById("key-container-s");
+        J = document.getElementById("key-container-j");
+        K = document.getElementById("key-container-k");
 
-        keys = {A, S, J, K}
+        keys = {A, S, J, K};
         // const lanes = createLanes(KEYS)
         // somehow play the background music -DONE
         playBgMusic("master-of-puppets")
@@ -61,7 +63,7 @@ function createLanes(keys) {
 
 
 // start playing the guitar and the rhythm
-export function playBgMusic(song) {
+function playBgMusic(song) {
     let guitar = new Audio('../audios/master-of-puppets/guitar.mp3') // had to change path for test - might need to change again (remove ../)
     let rhythm = new Audio('../audios/master-of-puppets/rhythm.mp3')
     console.log("The music should start playing here")
