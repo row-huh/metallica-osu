@@ -47,6 +47,8 @@ document.addEventListener('DOMContentLoaded', ()=> {
         // somehow have the notes start falling down
         playNotes(NOTES, keys)
 
+        const a_sound = new Audio('../audios/master-of-puppets/lvl1/1.mp3');
+
         // if a,s,j,k are pressed
         // putting this inside dom content loaded and start clicked bcz i only need
         // to accept keys after the two pre-reqs have been fulfilled: 
@@ -54,6 +56,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
         // 2. the background music is playing
         document.addEventListener('keydown', function(e) {
             if (e.key == 'a' || e.key == 'A') {
+                a_sound.play();
                 console.log("A pressed");
             } else if (e.key == 's' || e.key == 'S') {
                 console.log("S pressed");
