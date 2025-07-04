@@ -10,13 +10,27 @@ NOTES = [   // all instances where the player must intervene.
 KEYS = ['a', 's', 'j', 'k']
 
 
-// roha to roha : DO NOT DELETE THE TEXT BELOW THIS - LET THIS BE HERE REPRESENTING THE ENTIRE SCRIPT
+// roha to roha, row-huh, rokage and all other alter egos : DO NOT DELETE THE TEXT BELOW THIS - LET THIS BE HERE REPRESENTING THE ENTIRE SCRIPT
 // MAIN LOGIC
 // when dom content is loaded
 //      load the interface with one simple button that says start
-//      when start button is clicked on, play rhythm.mp3 and guitar.mp3 at the same time
-//      drums.mp3 is to be the sound that the user will have to play
+//      when start button is clicked on, play rhythm.mp3, drums.mp3 and guitar.mp3 at the same time
+//      decide on timestamps that will be the required hit times
 
+// Actually, I'm thinking of playing the drums.mp3 together with the other 2 sounds.
+// what the user will do is button smashing to the rhythm of the whole song
+
+
+// There's another approach I can take here;
+        // Split up drums.mp3
+        // Each note is associated to a key - i.e 1.mp3 is associated with 'a' and will need to be pressed at T + 1.2 seconds
+        // The problem's that this appraoch is;
+                // A) Too much work (manually associate each time stamp where there's a drum with a key(a,s,j,k)? no thank you)
+                // B) Even if I do that, I will have to play the sounds at the right time, 
+                // which is a tad complicating considering I do not know why there's 
+                // a delay - like with key a, i associated a sound 1.mp3 - i hit a, 1.mp3 plays but for a few seconds after that I do not hear 1.mp3
+                // which is strange considering 1.mp3 is a 1 second sound and the delay is easily 3-4 secs
+        // Get to Stage 1 (drums playing + user just hitting keys along the beat) then figure this out
 
 // button click logic?:
 // create sort of like swimlanes for the following keys: a, s, j, k
