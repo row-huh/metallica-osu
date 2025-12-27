@@ -1,14 +1,3 @@
-// necessary variables go here
-NOTES = [   // all instances where the player must intervene. 
-    {"time": 1.2, "key": "a"},
-    {"time": 2.2, "key": "s"},
-    {"time": 3.2, "key": "j"},
-    {"time": 4.2, "key": "k"}
-]
-// NOTES attributes: Time is the time at which they should intervene, key is the action they must take, sound is the sound that will play when the provided action is taken
-
-KEYS = ['a', 's', 'j', 'k']
-
 
 // roha to roha, row-huh, rokage and all other alter egos : DO NOT DELETE THE TEXT BELOW THIS - LET THIS BE HERE REPRESENTING THE ENTIRE SCRIPT
 // MAIN LOGIC
@@ -42,85 +31,307 @@ KEYS = ['a', 's', 'j', 'k']
 // the end of the viewport - at which point, the key should disappear 
 // OVER
 
-console.log("Before running script")
-
-document.addEventListener('DOMContentLoaded', ()=> {
-    const start = document.getElementById('start-button');
-    // load interface that only has one button which says 'start'
-    // when the start button is clicked on, call the createLanes function
-    start.addEventListener('click', () => {
-        A = document.getElementById("key-container-a");
-        S = document.getElementById("key-container-s");
-        J = document.getElementById("key-container-j");
-        K = document.getElementById("key-container-k");
-
-        keys = {A, S, J, K};
-        // const lanes = createLanes(KEYS)
-        // somehow play the background music - DONE
-        playBgMusic("master-of-puppets")
-        // somehow have the notes start falling down
-        playNotes(NOTES, keys)
-
-        const a_sound = new Audio('../audios/master-of-puppets/lvl1/1.mp3');
-
-        // if a,s,j,k are pressed
-        // putting this inside dom content loaded and start clicked bcz i only need
-        // to accept keys after the two pre-reqs have been fulfilled: 
-        // 1. the page is loaded
-        // 2. the background music is playing
-        document.addEventListener('keydown', function(e) {
-            if (e.key == 'a' || e.key == 'A') {
-                a_sound.play();
-                console.log("A pressed");
-            } else if (e.key == 's' || e.key == 'S') {
-                console.log("S pressed");
-            } else if (e.key == 'j' || e.key == 'J') {
-                console.log("J pressed");
-            } else if (e.key == 'k' || e.key == 'K') { 
-                console.log("K pressed");
-            } else {
-                console.log("Irrelevant key pressed");
-            }
-        // somehow figure out how it's all gonna go down next 
-})
 
 
-    })
+const FALL_DURATION = 2000; // Time for note to fall from top to bottom (ms)
+const PERFECT_WINDOW = 50; // Perfect hit window (ms)
+const GREAT_WINDOW = 100; // Great hit window (ms)
+const GOOD_WINDOW = 150; // Good hit window (ms)
 
-})
+const NOTES = [
+    { time: 2.0, key: "a" },
+    { time: 2.5, key: "s" },
+    { time: 3.0, key: "j" },
+    { time: 3.5, key: "k" },
+    { time: 4.0, key: "a" },
+    { time: 4.3, key: "s" },
+    { time: 4.6, key: "j" },
+    { time: 5.0, key: "k" },
+    { time: 5.4, key: "a" },
+    { time: 5.8, key: "s" },
+    { time: 6.2, key: "j" },
+    { time: 6.6, key: "k" },
+    { time: 7.0, key: "a" },
+    { time: 7.3, key: "a" },
+    { time: 7.6, key: "s" },
+    { time: 8.0, key: "j" },
+    { time: 8.4, key: "k" },
+    { time: 8.8, key: "a" },
+    { time: 9.2, key: "s" },
+    { time: 9.6, key: "j" },
+    { time: 10.0, key: "k" },
+    { time: 10.4, key: "a" },
+    { time: 10.8, key: "s" },
+    { time: 11.2, key: "j" },
+    { time: 11.6, key: "k" },
+    { time: 12.0, key: "a" },
+    { time: 12.3, key: "s" },
+    { time: 12.6, key: "a" },
+    { time: 13.0, key: "j" },
+    { time: 13.4, key: "k" },
+    { time: 13.8, key: "a" },
+    { time: 14.2, key: "s" },
+    { time: 14.6, key: "j" },
+    { time: 15.0, key: "k" }
+];
+
+const KEYS = ['a', 's', 'j', 'k'];
+
+let gameState = {
+    score: 0,
+    combo: 0,
+    maxCombo: 0,
+    hits: { perfect: 0, great: 0, good: 0, miss: 0 },
+    isPlaying: false,
+    startTime: null,
+    activeNotes: [],
+    spawnedNotes: new Set(),
+    guitar: null,
+    rhythm: null
+};
+
+let lanes = {};
+
+document.addEventListener('DOMContentLoaded', () => {
+    const startButton = document.getElementById('start-button');
+    
+    // Cache lane references
+    lanes = {
+        a: document.getElementById('key-container-a'),
+        s: document.getElementById('key-container-s'),
+        j: document.getElementById('key-container-j'),
+        k: document.getElementById('key-container-k')
+    };
+
+    startButton.addEventListener('click', startGame);
+
+    document.addEventListener('keydown', handleKeyPress);
+    document.addEventListener('keyup', handleKeyRelease);
+});
 
 
+function startGame() {
+    const startButton = document.getElementById('start-button');
+    startButton.classList.add('hidden');
+    
+    gameState = {
+        score: 0,
+        combo: 0,
+        maxCombo: 0,
+        hits: { perfect: 0, great: 0, good: 0, miss: 0 },
+        isPlaying: true,
+        startTime: Date.now(),
+        activeNotes: [],
+        spawnedNotes: new Set()
+    };
+    
+    updateScoreDisplay();
+    playBgMusic();
+    startGameLoop();
+}
 
-// UPDATE: i probably don't need this function 
-function createLanes(keys) {
-    // somehow create one container / div for each key in the array KEYS
+function playBgMusic() {
+    gameState.guitar = new Audio('audios/master-of-puppets/guitar.mp3');
+    gameState.rhythm = new Audio('audios/master-of-puppets/rhythm.mp3');
+    
+    gameState.guitar.play();
+    gameState.rhythm.play();
+    
+    console.log('Master of Puppets - Playing!');
 }
 
 
-
-// start playing the guitar and the rhythm
-function playBgMusic(song) {
-    let guitar = new Audio('../audios/master-of-puppets/guitar.mp3') // had to change path for test - might need to change again (remove ../)
-    let rhythm = new Audio('../audios/master-of-puppets/rhythm.mp3')
-    console.log("The music should start playing here")
-    guitar.play()
-    rhythm.play()
-}
-
-
-
-function playNotes(notes, lanes) {
-    // somehow, each note must be read 1 second before it must be executed
-    // that 1 sec is for the falling down animation - CSS?
-    // The notes shouldn't go incrementally - like one goes through then we read the other
-    // Instead, notes should start appearing T minus 1 second for each note, I think I need something asynchronous here
-
-    startTime = Date.now()
-
-    // create an interval that runs after every 10th of a second;
-    const interval = setInterval(() => {
-        const currentTime = (Date.now() - startTime) / 1000;
+function startGameLoop() {
+    const gameLoop = setInterval(() => {
+        if (!gameState.isPlaying) {
+            clearInterval(gameLoop);
+            return;
+        }
         
-        // for loop which runs each 0.1 second later
-    }, 100) // 100 ms
+        const currentTime = (Date.now() - gameState.startTime) / 1000;
+        
+        spawnNotes(currentTime);
+        
+        updateNotes(currentTime);
+        
+        checkMissedNotes(currentTime);
+        
+    }, 16); 
 }
+
+function spawnNotes(currentTime) {
+    NOTES.forEach((note, index) => {
+        const spawnTime = note.time - (FALL_DURATION / 1000);
+        
+        if (currentTime >= spawnTime && !gameState.spawnedNotes.has(index)) {
+            gameState.spawnedNotes.add(index);
+            createNote(note, index);
+        }
+    });
+}
+
+function createNote(noteData, noteId) {
+    const noteElement = document.createElement('div');
+    noteElement.className = `note note-${noteData.key}`;
+    noteElement.textContent = noteData.key.toUpperCase();
+    noteElement.dataset.noteId = noteId;
+    noteElement.dataset.hitTime = noteData.time;
+    noteElement.dataset.key = noteData.key;
+    
+    noteElement.style.top = '-60px';
+    
+    lanes[noteData.key].appendChild(noteElement);
+    
+    gameState.activeNotes.push({
+        element: noteElement,
+        noteId: noteId,
+        hitTime: noteData.time,
+        key: noteData.key,
+        hit: false
+    });
+}
+
+function updateNotes(currentTime) {
+    gameState.activeNotes.forEach(note => {
+        if (note.hit) return;
+        
+        const timeSinceSpawn = currentTime - (note.hitTime - FALL_DURATION / 1000);
+        const progress = timeSinceSpawn / (FALL_DURATION / 1000);
+        
+        const laneHeight = lanes[note.key].clientHeight;
+        const position = progress * laneHeight - 60;
+        
+        note.element.style.top = `${position}px`;
+    });
+}
+
+function checkMissedNotes(currentTime) {
+    gameState.activeNotes = gameState.activeNotes.filter(note => {
+        if (note.hit) return false;
+        
+        const missWindow = note.hitTime + (GOOD_WINDOW / 1000);
+        
+        if (currentTime > missWindow) {
+            handleMiss(note);
+            note.element.remove();
+            return false;
+        }
+        
+        return true;
+    });
+}
+
+function handleKeyPress(e) {
+    if (!gameState.isPlaying) return;
+    
+    const key = e.key.toLowerCase();
+    if (!KEYS.includes(key)) return;
+    
+    lanes[key].classList.add('active');
+    
+    const currentTime = (Date.now() - gameState.startTime) / 1000;
+    const notesInLane = gameState.activeNotes.filter(
+        note => note.key === key && !note.hit
+    );
+    
+    if (notesInLane.length === 0) return;
+    
+    let closestNote = null;
+    let minDiff = Infinity;
+    
+    notesInLane.forEach(note => {
+        const diff = Math.abs(currentTime - note.hitTime);
+        if (diff < minDiff) {
+            minDiff = diff;
+            closestNote = note;
+        }
+    });
+    
+    if (!closestNote) return;
+    
+    const timingDiff = Math.abs(currentTime - closestNote.hitTime) * 1000;
+    
+    if (timingDiff <= PERFECT_WINDOW) {
+        handleHit(closestNote, 'perfect');
+    } else if (timingDiff <= GREAT_WINDOW) {
+        handleHit(closestNote, 'great');
+    } else if (timingDiff <= GOOD_WINDOW) {
+        handleHit(closestNote, 'good');
+    }
+}
+
+function handleKeyRelease(e) {
+    const key = e.key.toLowerCase();
+    if (KEYS.includes(key)) {
+        lanes[key].classList.remove('active');
+    }
+}
+
+function handleHit(note, accuracy) {
+    note.hit = true;
+    note.element.classList.add('hit');
+    
+    gameState.hits[accuracy]++;
+    gameState.combo++;
+    
+    if (gameState.combo > gameState.maxCombo) {
+        gameState.maxCombo = gameState.combo;
+    }
+    
+    const scoreMap = {
+        perfect: 300,
+        great: 200,
+        good: 100
+    };
+    
+    const comboBonus = Math.min(gameState.combo * 10, 500);
+    gameState.score += scoreMap[accuracy] + comboBonus;
+    
+    showHitFeedback(note.key, accuracy);
+    
+    setTimeout(() => note.element.remove(), 100);
+    
+    updateScoreDisplay();
+}
+
+function handleMiss(note) {
+    gameState.hits.miss++;
+    gameState.combo = 0;
+    
+    showHitFeedback(note.key, 'miss');
+    updateScoreDisplay();
+}
+
+// fetch hit feedback based on accuracy thingy like error points so to speak
+function showHitFeedback(key, accuracy) {
+    const lane = lanes[key];
+    const feedback = document.createElement('div');
+    feedback.className = `hit-feedback hit-${accuracy}`;
+    
+    const textMap = {
+        perfect: 'PERFECT!',
+        great: 'GREAT!',
+        good: 'GOOD',
+        miss: 'MISS'
+    };
+    
+    feedback.textContent = textMap[accuracy];
+    lane.appendChild(feedback);
+    
+    setTimeout(() => feedback.remove(), 500);
+}
+
+function updateScoreDisplay() {
+    document.getElementById('score-value').textContent = gameState.score;
+    document.getElementById('combo-value').textContent = `${gameState.combo}x`;
+    
+    const totalHits = gameState.hits.perfect + gameState.hits.great + 
+                      gameState.hits.good + gameState.hits.miss;
+    const accuracy = totalHits > 0 
+        ? Math.round(((gameState.hits.perfect + gameState.hits.great + gameState.hits.good) / totalHits) * 100)
+        : 100;
+    
+    document.getElementById('accuracy-value').textContent = `${accuracy}%`;
+}
+
+console.log('Metallica OSU - behehhe');

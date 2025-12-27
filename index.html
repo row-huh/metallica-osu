@@ -3,27 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Metallica Osu</title>
-    <!--<link rel="stylesheet" href="static/styles.css">-->
-    <script src="index.js"></script>
+    <title>Metallica Osu - Master of Puppets</title>
+    <link rel="stylesheet" href="static/styles.css">
 </head>
 
-
-
 <body>
-        <button id="start-button">START</button>
+    <div id="game-container">
+        <div id="score-board">
+            <div class="score-item">
+                <div class="score-label">SCORE</div>
+                <div class="score-value" id="score-value">0</div>
+            </div>
+            <div class="score-item">
+                <div class="score-label">COMBO</div>
+                <div class="score-value" id="combo-value">0x</div>
+            </div>
+            <div class="score-item">
+                <div class="score-label">ACCURACY</div>
+                <div class="score-value" id="accuracy-value">100%</div>
+            </div>
+        </div>
 
-        <div id="key-container-a">
-            A
+        <div id="lanes-container">
+            <div id="key-container-a" class="lane">
+                <div class="lane-label">A</div>
+                <div class="hit-zone"></div>
+            </div>
+            <div id="key-container-s" class="lane">
+                <div class="lane-label">S</div>
+                <div class="hit-zone"></div>
+            </div>
+            <div id="key-container-j" class="lane">
+                <div class="lane-label">J</div>
+                <div class="hit-zone"></div>
+            </div>
+            <div id="key-container-k" class="lane">
+                <div class="lane-label">K</div>
+                <div class="hit-zone"></div>
+            </div>
         </div>
-        <div id="key-container-s">
-            S
-        </div>
-        <div id="key-container-j">
-            J
-        </div>
-        <div id="key-container-k">
-            K
-        </div>
+
+        <button id="start-button">START MASTER OF PUPPETS 🎸</button>
+    </div>
+
+    <script src="index.js"></script>
 </body>
 </html>
