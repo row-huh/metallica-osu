@@ -138,10 +138,12 @@ function playBgMusic() {
     // idk why but maybe coz of a slight delay the rhythm is dominating the track for some reason
     gameState.rhythm.volume = 0.3;
 
-    // Synchronize all three tracks
     gameState.guitar.play();
     gameState.rhythm.play();
     gameState.drums.play();
+    gameState.drums.currentTime += 0.05; // the delay was acttually the drums
+    gameState.rhythm.currentTime -= 0.06; // and the rhythm was too late, that's why it must be sounding idk off and dominant
+
     
     console.log('🎸 Master of Puppets - Playing with drums! 🥁');
 }
