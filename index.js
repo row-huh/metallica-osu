@@ -1,4 +1,3 @@
-
 // roha to roha, row-huh, rokage and all other alter egos : DO NOT DELETE THE TEXT BELOW THIS - LET THIS BE HERE REPRESENTING THE ENTIRE SCRIPT
 // MAIN LOGIC
 // when dom content is loaded
@@ -87,7 +86,8 @@ let gameState = {
     activeNotes: [],
     spawnedNotes: new Set(),
     guitar: null,
-    rhythm: null
+    rhythm: null,
+    drums: null
 };
 
 let lanes = {};
@@ -133,11 +133,17 @@ function startGame() {
 function playBgMusic() {
     gameState.guitar = new Audio('audios/master-of-puppets/guitar.mp3');
     gameState.rhythm = new Audio('audios/master-of-puppets/rhythm.mp3');
-    
+    gameState.drums = new Audio('audios/master-of-puppets/drums.mp3');
+
+    // idk why but maybe coz of a slight delay the rhythm is dominating the track for some reason
+    gameState.rhythm.volume = 0.3;
+
+    // Synchronize all three tracks
     gameState.guitar.play();
     gameState.rhythm.play();
+    gameState.drums.play();
     
-    console.log('Master of Puppets - Playing!');
+    console.log('🎸 Master of Puppets - Playing with drums! 🥁');
 }
 
 
